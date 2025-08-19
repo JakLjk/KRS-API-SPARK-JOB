@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession, functions as F, types as T, Window
 from .schemas.schema_raw_krs_api_json import schema as krs_api_schema
 
 
-from config import (
+from spark_processors.config import (
     ENV_APP_NAME,
     ENV_MASTER_URL,
     ENV_TIMEZONE,

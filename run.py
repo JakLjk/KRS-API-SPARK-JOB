@@ -6,5 +6,5 @@ from spark_processors.krs_api_processor.krs_api_loader_gold import krs_api_job a
 
 if __name__ == "__main__":
     # bronze()
-    silver()
-    # gold()
+    # silver()
+    gold()

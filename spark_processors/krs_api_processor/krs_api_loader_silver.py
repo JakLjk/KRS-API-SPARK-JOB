@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession, functions as F, types as T, Window
 from .schemas.schema_raw_krs_api_json import schema as krs_api_schema
 from .functions.write_to_delta import write_to_delta
 
-from config import(
+from spark_processors.config import(
     ENV_APP_NAME,
     ENV_MASTER_URL,
     ENV_HADOOP_USER,
@@ -35,6 +35,13 @@ from config import(
     ENV_DELTA_SILVER_HISTORY_SHARE_ISSUES_SERIES_NAME,
     ENV_DELTA_SILVER_HISTORY_SHARE_ISSUES_SHARES_IN_SERIES,
     ENV_DELTA_SILVER_HISTORY_SHARE_ISSUES_PREFERENCE_INFO,
+
+    ENV_SPARK_EXECUTORS_MEMORY,
+    ENV_SPARK_EXECUTORS_CORES,
+    ENV_SPARK_EXECUTORS_OVERHEAD,
+    ENV_SPARK_NETWORK_TIMEOUT,
+    ENV_SPARK_SHUFFLE_MAX_RETRIES,
+    ENV_SPARK_SHUFFLE_RETRY_WAIT,
 )
 
 
@@ -54,6 +61,13 @@ def krs_api_job():
         .config("spark.sql.session.timeZone", ENV_TIMEZONE)
         .config("spark.executorEnv.HADOOP_USER_NAME", ENV_HADOOP_USER)
         .config("spark.driverEnv.HADOOP_USER_NAME",  ENV_HADOOP_USER)
+        .config("spark.executor.memory", ENV_SPARK_EXECUTORS_MEMORY)
+        .config("spark.executor.cores", ENV_SPARK_EXECUTORS_CORES)
+        .config("spark.executor.memoryOverhead", ENV_SPARK_EXECUTORS_OVERHEAD)
+        .config("spark.network.timeout", ENV_SPARK_NETWORK_TIMEOUT)
+        .config("spark.shuffle.io.maxRetries", ENV_SPARK_SHUFFLE_MAX_RETRIES)
+        .config("spark.shuffle.io.retryWait", ENV_SPARK_SHUFFLE_RETRY_WAIT)
+        .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
         .getOrCreate())
 
     # Load bronze layer from Delta Lake
